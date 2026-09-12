@@ -17,11 +17,11 @@
   // 本地儲存 Key
   const STORAGE_KEY = 'morandi_todo_items_v1';
 
-  // 取得相對目前時間的格式化日期時間 (YYYY-MM-DDTHH:mm)
-  function getSampleDateTime(offsetHours = 0) {
-    const d = new Date(Date.now() + offsetHours * 3600000);
+  // 取得相對目前時間的格式化日期 (YYYY-MM-DD)
+  function getSampleDate(offsetDays = 0) {
+    const d = new Date(Date.now() + offsetDays * 86400000);
     const pad = n => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   }
 
   // 預設示範資料 (若首次開啟使用)
@@ -32,7 +32,7 @@
       category: 'work',
       priority: 'high',
       status: 'todo',
-      dueDate: getSampleDateTime(4), // 今天稍後
+      dueDate: getSampleDate(0), // 今天 (顯示紅色標籤)
       completed: false,
       createdAt: Date.now() - 3600000
     },
@@ -42,7 +42,7 @@
       category: 'life',
       priority: 'medium',
       status: 'process',
-      dueDate: getSampleDateTime(24), // 明天
+      dueDate: getSampleDate(1), // 明天 (顯示一般標籤)
       completed: false,
       createdAt: Date.now() - 7200000
     },
@@ -52,7 +52,7 @@
       category: 'life',
       priority: 'low',
       status: 'done',
-      dueDate: '',
+      dueDate: '', // 無截止日期
       completed: true,
       createdAt: Date.now() - 10800000
     }
@@ -171,56 +171,94 @@
     currentDateEl.textContent = dateString;
   }
 
-  // 時限解析與格式化
+  // 截止日期解析與格式化 (年/月/日)
   function parseDueDate(dueDateStr) {
     if (!dueDateStr) return null;
-    const due = new Date(dueDateStr);
-    if (isNaN(due.getTime())) return null;
 
-    const now = new Date();
-    const isOverdue = due < now;
+    let year, month, day, hours = 0, minutes = 0, hasTime = false;
 
-    // 是否為今天 / 明天
-    const isToday = due.toDateString() === now.toDateString();
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const isTomorrow = due.toDateString() === tomorrow.toDateString();
+    if (dueDateStr.includes('T')) {
+      const [datePart, timePart] = dueDateStr.split('T');
+      const dateParts = datePart.split('-');
+      year = parseInt(dateParts[0], 10);
+      month = parseInt(dateParts[1], 10);
+      day = parseInt(dateParts[2], 10);
 
-    const hours = String(due.getHours()).padStart(2, '0');
-    const minutes = String(due.getMinutes()).padStart(2, '0');
-    const timeStr = `${hours}:${minutes}`;
-
-    let dateBadgeText = '';
-    if (isToday) {
-      dateBadgeText = `今天 ${timeStr}`;
-    } else if (isTomorrow) {
-      dateBadgeText = `明天 ${timeStr}`;
-    } else {
-      const month = due.getMonth() + 1;
-      const day = due.getDate();
-      dateBadgeText = `${month}/${day} ${timeStr}`;
+      if (timePart) {
+        const timeParts = timePart.split(':');
+        hours = parseInt(timeParts[0], 10) || 0;
+        minutes = parseInt(timeParts[1], 10) || 0;
+        hasTime = true;
+      }
+    } else if (dueDateStr.includes('-')) {
+      const dateParts = dueDateStr.split('-');
+      year = parseInt(dateParts[0], 10);
+      month = parseInt(dateParts[1], 10);
+      day = parseInt(dateParts[2], 10);
+    } else if (dueDateStr.includes('/')) {
+      const dateParts = dueDateStr.split('/');
+      year = parseInt(dateParts[0], 10);
+      month = parseInt(dateParts[1], 10);
+      day = parseInt(dateParts[2], 10);
     }
 
-    const dateKey = `${due.getFullYear()}-${String(due.getMonth() + 1).padStart(2, '0')}-${String(due.getDate()).padStart(2, '0')}`;
+    if (isNaN(year) || isNaN(month) || isNaN(day)) {
+      const d = new Date(dueDateStr);
+      if (isNaN(d.getTime())) return null;
+      year = d.getFullYear();
+      month = d.getMonth() + 1;
+      day = d.getDate();
+      hours = d.getHours();
+      minutes = d.getMinutes();
+    }
+
+    const pad = n => String(n).padStart(2, '0');
+    // 「年/月/日」格式
+    const formattedDate = `${year}/${pad(month)}/${pad(day)}`;
+
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+    const currentDate = now.getDate();
+
+    // 判斷是否為今天
+    const isToday = (year === currentYear && month === currentMonth && day === currentDate);
+
+    // 判斷是否已過期 (今天以前的日期視為逾期)
+    const isOverdue = (year < currentYear) ||
+      (year === currentYear && month < currentMonth) ||
+      (year === currentYear && month === currentMonth && day < currentDate);
+
+    const timeStr = hasTime ? `${pad(hours)}:${pad(minutes)}` : '';
+    const dateKey = `${year}-${pad(month)}-${pad(day)}`;
+
+    // 明天判斷 (用於時間軸分組標題)
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const isTomorrow = (year === tomorrow.getFullYear() && month === (tomorrow.getMonth() + 1) && day === tomorrow.getDate());
+
     let groupTitle = '';
     if (isToday) {
-      groupTitle = `今天 · ${due.getMonth() + 1}月${due.getDate()}日`;
+      groupTitle = `今天 · ${month}月${day}日`;
     } else if (isTomorrow) {
-      groupTitle = `明天 · ${due.getMonth() + 1}月${due.getDate()}日`;
+      groupTitle = `明天 · ${month}月${day}日`;
     } else {
+      const targetDateObj = new Date(year, month - 1, day);
       const weekdayNames = ['日', '一', '二', '三', '四', '五', '六'];
-      groupTitle = `${due.getMonth() + 1}月${due.getDate()}日 · 星期${weekdayNames[due.getDay()]}`;
+      groupTitle = `${month}月${day}日 · 星期${weekdayNames[targetDateObj.getDay()]}`;
     }
 
     return {
-      due,
+      due: new Date(year, month - 1, day, hours, minutes),
+      year,
+      month,
+      day,
+      formattedDate,
       timeStr,
       dateKey,
       groupTitle,
-      dateBadgeText,
-      isOverdue,
       isToday,
-      isTomorrow
+      isOverdue
     };
   }
 
@@ -255,18 +293,20 @@
     const dueInfo = parseDueDate(task.dueDate);
     const statusClass = `status-${task.status}`;
 
-    // 時限標籤
+    // 截止日期標籤 (日期有填的話，顯示「年/月/日」標籤；若是今天或已過期，標籤顯示紅色)
     let deadlineHtml = '';
     if (dueInfo) {
-      const isOverdue = dueInfo.isOverdue && task.status !== 'done';
-      const badgeClass = isOverdue ? 'overdue' : (dueInfo.isToday ? 'today' : '');
+      const isRed = dueInfo.isToday || dueInfo.isOverdue;
+      const badgeClass = isRed ? 'today overdue' : '';
       deadlineHtml = `
-        <span class="badge-deadline ${badgeClass}" title="截止時限：${task.dueDate.replace('T', ' ')}">
+        <span class="badge-deadline ${badgeClass}" title="截止日期：${dueInfo.formattedDate}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-          <span>${dueInfo.dateBadgeText}${isOverdue ? ' (逾期)' : ''}</span>
+          <span>${dueInfo.formattedDate}</span>
         </span>
       `;
     }
@@ -749,11 +789,13 @@
     // 表單送出
     todoForm.addEventListener('submit', handleAddTask);
 
-    // 時限清除按鈕連動
+    // 截止日期清除按鈕連動
     if (taskDueDate && clearDateBtn) {
-      taskDueDate.addEventListener('input', () => {
+      const updateClearBtn = () => {
         clearDateBtn.style.display = taskDueDate.value ? 'inline-block' : 'none';
-      });
+      };
+      taskDueDate.addEventListener('input', updateClearBtn);
+      taskDueDate.addEventListener('change', updateClearBtn);
       clearDateBtn.addEventListener('click', () => {
         taskDueDate.value = '';
         clearDateBtn.style.display = 'none';

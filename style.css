@@ -359,6 +359,7 @@ body {
   position: relative;
   display: inline-flex;
   align-items: center;
+  gap: 0.3rem;
 }
 
 .deadline-input {
@@ -381,12 +382,10 @@ body {
 }
 
 .btn-clear-date {
-  position: absolute;
-  right: 5px;
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   cursor: pointer;
   line-height: 1;
   padding: 0 3px;
@@ -1020,17 +1019,13 @@ body {
   stroke: currentColor;
 }
 
-.badge-deadline.overdue {
-  color: var(--danger-color);
-  background: var(--danger-bg);
-  border: 1px solid rgba(178, 106, 106, 0.25);
+.badge-deadline.overdue,
+.badge-deadline.today,
+.badge-deadline.urgent {
+  color: #C62828;
+  background: #FDE8E8;
+  border: 1px solid #F8B4B4;
   font-weight: 600;
-}
-
-.badge-deadline.today {
-  color: var(--priority-med);
-  background: var(--priority-med-bg);
-  border: 1px solid var(--priority-med-border);
 }
 
 /* 刪除按鈕 */
