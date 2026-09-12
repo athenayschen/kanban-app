@@ -1,0 +1,1322 @@
+/* ==========================================================================
+   北歐莫蘭迪色系 (Nordic Morandi Palette) - 待辦清單樣式
+   ========================================================================== */
+
+:root {
+  /* 基礎色調 - 莫蘭迪低飽和沉穩色系 */
+  --bg-body: #F4F6F5;
+  --bg-card: #FFFFFF;
+  --text-main: #2C3539;
+  --text-muted: #788691;
+  --text-subtle: #A3B0B9;
+  --border-light: #E7ECEB;
+  --border-focus: #94A6B2;
+
+  /* 莫蘭迪分類色調 */
+  /* 工作 - 煙霾霧藍 (Smoky Haze Blue) */
+  --work-primary: #526E80;
+  --work-bg: #EDF3F7;
+  --work-border: #D1DEE7;
+
+  /* 生活 - 鼠尾草灰綠 (Sage Moss Green) */
+  --life-primary: #5B7A68;
+  --life-bg: #EFF5F1;
+  --life-border: #D5E3D9;
+
+  /* 莫蘭迪優先順序色調 (高中低) */
+  /* 高 - 磚陶紅 (Muted Terracotta) */
+  --priority-high: #B56257;
+  --priority-high-bg: #FAF0EE;
+  --priority-high-border: #F0D7D4;
+
+  /* 中 - 暖琥珀 (Warm Amber Ochre) */
+  --priority-med: #9E7B48;
+  --priority-med-bg: #FAF5ED;
+  --priority-med-border: #EFE4D3;
+
+  /* 低 - 霧暮灰 (Misty Slate Gray) */
+  --priority-low: #6B7B88;
+  --priority-low-bg: #F0F3F5;
+  --priority-low-border: #D9E1E6;
+
+  /* 互動與功能色 */
+  --btn-main: #3B4B54;
+  --btn-main-hover: #2B383F;
+  --danger-color: #B26A6A;
+  --danger-bg: #F9EFEF;
+  --checkbox-border: #C1CCD4;
+  --checkbox-checked: #5C7685;
+
+  /* 陰影與圓角 */
+  --shadow-card: 0 10px 30px -4px rgba(44, 53, 57, 0.05), 0 4px 12px -2px rgba(44, 53, 57, 0.03);
+  --shadow-sm: 0 2px 6px rgba(44, 53, 57, 0.04);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* 字體 */
+  --font-family: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* 基礎重置 */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem 1.25rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 主容器 */
+.app-container {
+  width: 100%;
+  max-width: 1120px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 頂部 Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 0.5rem;
+}
+
+.header-date {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.header-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+.header-badge {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 卡片基礎樣式 */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+}
+
+/* 新增任務區塊 */
+.input-card {
+  padding: 1.25rem 1.4rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.input-card:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 12px 35px -4px rgba(82, 110, 128, 0.1);
+}
+
+.todo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.input-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.task-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1.05rem;
+  font-family: inherit;
+  color: var(--text-main);
+  background: transparent;
+  padding: 0.4rem 0;
+}
+
+.task-input::placeholder {
+  color: var(--text-subtle);
+  font-weight: 400;
+}
+
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--btn-main);
+  color: #FFFFFF;
+  border: none;
+  outline: none;
+  padding: 0.65rem 1.15rem;
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  flex-shrink: 0;
+}
+
+.btn-submit:hover {
+  background: var(--btn-main-hover);
+}
+
+.btn-submit:active {
+  transform: scale(0.97);
+}
+
+.icon-plus {
+  width: 16px;
+  height: 16px;
+}
+
+/* 表單選項區塊 (分類與優先順序) */
+.form-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-light);
+}
+
+.option-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.option-label {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.option-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--border-light);
+}
+
+.pill-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.category-pill,
+.priority-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.category-pill input,
+.priority-pill input {
+  display: none;
+}
+
+.pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+/* 工作藥丸選取態 */
+.category-pill.work {
+  color: var(--work-primary);
+  background: transparent;
+  border-color: var(--border-light);
+}
+.category-pill.work .pill-dot {
+  background: var(--work-primary);
+}
+.category-pill.work:has(input:checked) {
+  background: var(--work-bg);
+  border-color: var(--work-border);
+  font-weight: 600;
+}
+.category-pill.work:has(input:checked) .pill-dot {
+  transform: scale(1.2);
+}
+
+/* 生活藥丸選取態 */
+.category-pill.life {
+  color: var(--life-primary);
+  background: transparent;
+  border-color: var(--border-light);
+}
+.category-pill.life .pill-dot {
+  background: var(--life-primary);
+}
+.category-pill.life:has(input:checked) {
+  background: var(--life-bg);
+  border-color: var(--life-border);
+  font-weight: 600;
+}
+.category-pill.life:has(input:checked) .pill-dot {
+  transform: scale(1.2);
+}
+
+/* 優先順序 - 高 */
+.priority-pill.high {
+  color: var(--priority-high);
+  background: transparent;
+  border-color: var(--border-light);
+}
+.priority-pill.high .pill-dot {
+  background: var(--priority-high);
+}
+.priority-pill.high:has(input:checked) {
+  background: var(--priority-high-bg);
+  border-color: var(--priority-high-border);
+  font-weight: 600;
+}
+.priority-pill.high:has(input:checked) .pill-dot {
+  transform: scale(1.2);
+}
+
+/* 優先順序 - 中 */
+.priority-pill.medium {
+  color: var(--priority-med);
+  background: transparent;
+  border-color: var(--border-light);
+}
+.priority-pill.medium .pill-dot {
+  background: var(--priority-med);
+}
+.priority-pill.medium:has(input:checked) {
+  background: var(--priority-med-bg);
+  border-color: var(--priority-med-border);
+  font-weight: 600;
+}
+.priority-pill.medium:has(input:checked) .pill-dot {
+  transform: scale(1.2);
+}
+
+/* 優先順序 - 低 */
+.priority-pill.low {
+  color: var(--priority-low);
+  background: transparent;
+  border-color: var(--border-light);
+}
+.priority-pill.low .pill-dot {
+  background: var(--priority-low);
+}
+.priority-pill.low:has(input:checked) {
+  background: var(--priority-low-bg);
+  border-color: var(--priority-low-border);
+  font-weight: 600;
+}
+.priority-pill.low:has(input:checked) .pill-dot {
+  transform: scale(1.2);
+}
+
+/* 時限輸入框樣式 */
+.deadline-input-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.deadline-input {
+  border: 1px solid var(--border-light);
+  background: #FAFCFB;
+  padding: 0.26rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-family: inherit;
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.deadline-input:focus {
+  border-color: var(--border-focus);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 2px rgba(148, 166, 178, 0.2);
+}
+
+.btn-clear-date {
+  position: absolute;
+  right: 5px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 3px;
+  border-radius: 50%;
+  transition: color 0.15s ease;
+}
+
+.btn-clear-date:hover {
+  color: var(--danger-color);
+}
+
+/* 工具列 (篩選標籤 + 檢視切換 + 清除按鈕) */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0 0.25rem;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.filter-tabs {
+  display: flex;
+  background: rgba(228, 235, 235, 0.55);
+  padding: 0.25rem;
+  border-radius: var(--radius-full);
+  gap: 0.2rem;
+}
+
+.filter-tab {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.4rem 0.95rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.filter-tab:hover {
+  color: var(--text-main);
+}
+
+.filter-tab.active {
+  background: #FFFFFF;
+  color: var(--text-main);
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.tab-badge {
+  font-size: 0.725rem;
+  background: rgba(120, 134, 145, 0.12);
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-full);
+  line-height: 1.2;
+}
+
+.filter-tab.active .tab-badge {
+  background: var(--border-light);
+}
+
+/* 檢視模式切換 (清單 / 時間軸) */
+.view-toggle {
+  display: flex;
+  background: rgba(228, 235, 235, 0.55);
+  padding: 0.2rem;
+  border-radius: var(--radius-full);
+  gap: 0.15rem;
+}
+
+.view-btn {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-full);
+  font-size: 0.785rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.view-btn:hover {
+  color: var(--text-main);
+}
+
+.view-btn.active {
+  background: #FFFFFF;
+  color: var(--text-main);
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.view-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.btn-clear {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.btn-clear:hover {
+  color: var(--danger-color);
+  background: var(--danger-bg);
+}
+
+/* 任務視圖區塊 */
+.task-views-section {
+  position: relative;
+  width: 100%;
+}
+
+/* ==========================================================================
+   三欄式看板 (Kanban Board)
+   ========================================================================== */
+
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  width: 100%;
+}
+
+.kanban-column {
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-height: 320px;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 1. To-do 待辦欄位 (莫蘭迪冷霧灰藍) */
+.kanban-column[data-status="todo"] {
+  background: #EEF2F5;
+  border-color: #D6DFE6;
+}
+
+.kanban-column[data-status="todo"] .kanban-column-header {
+  border-bottom-color: rgba(94, 113, 130, 0.12);
+}
+
+.kanban-column[data-status="todo"] .column-title {
+  color: #3E5262;
+}
+
+.kanban-column[data-status="todo"] .column-badge {
+  color: #4F6577;
+  border-color: #D3DEE5;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.kanban-column[data-status="todo"] .kanban-empty-placeholder {
+  border-color: rgba(94, 116, 133, 0.3);
+  color: #728796;
+}
+
+.kanban-column[data-status="todo"] .kanban-column-body.drag-over {
+  background: rgba(215, 227, 237, 0.7);
+  outline-color: #5E7485;
+}
+
+/* 2. Process 進行中欄位 (莫蘭迪暖杏琥珀) */
+.kanban-column[data-status="process"] {
+  background: #F8F3EB;
+  border-color: #EBDDC9;
+}
+
+.kanban-column[data-status="process"] .kanban-column-header {
+  border-bottom-color: rgba(166, 133, 85, 0.14);
+}
+
+.kanban-column[data-status="process"] .column-title {
+  color: #735324;
+}
+
+.kanban-column[data-status="process"] .column-badge {
+  color: #8C662E;
+  border-color: #E8D8C2;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.kanban-column[data-status="process"] .kanban-empty-placeholder {
+  border-color: rgba(176, 133, 68, 0.3);
+  color: #9E7D4C;
+}
+
+.kanban-column[data-status="process"] .kanban-column-body.drag-over {
+  background: rgba(246, 236, 219, 0.75);
+  outline-color: #B08544;
+}
+
+/* 3. Done 已完成欄位 (莫蘭迪鼠尾草灰綠) */
+.kanban-column[data-status="done"] {
+  background: #EDF4F0;
+  border-color: #D1E4D8;
+}
+
+.kanban-column[data-status="done"] .kanban-column-header {
+  border-bottom-color: rgba(91, 122, 104, 0.14);
+}
+
+.kanban-column[data-status="done"] .column-title {
+  color: #365742;
+}
+
+.kanban-column[data-status="done"] .column-badge {
+  color: #486E56;
+  border-color: #CFE2D6;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.kanban-column[data-status="done"] .kanban-empty-placeholder {
+  border-color: rgba(84, 119, 97, 0.3);
+  color: #698C76;
+}
+
+.kanban-column[data-status="done"] .kanban-column-body.drag-over {
+  background: rgba(220, 236, 227, 0.7);
+  outline-color: #547761;
+}
+
+/* 欄位標題與圖示 */
+.kanban-column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.1rem 0.35rem 0.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.column-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.column-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.column-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-todo {
+  background: var(--priority-low); /* 霧暮灰 */
+}
+
+.dot-process {
+  background: var(--priority-med); /* 暖琥珀 */
+}
+
+.dot-done {
+  background: var(--life-primary); /* 鼠尾草灰綠 */
+}
+
+.column-badge {
+  font-size: 0.725rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+/* 欄位放置區 (Drop Zone) */
+.kanban-column-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 220px;
+  padding: 0.35rem 0.15rem;
+  border-radius: var(--radius-md);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 拖曳懸停通用高亮 */
+.kanban-column-body.drag-over {
+  outline: 2px dashed var(--work-primary);
+  outline-offset: -2px;
+  border-radius: var(--radius-md);
+}
+
+/* 卡片空佔位 */
+.kanban-empty-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90px;
+  border: 1.5px dashed rgba(163, 176, 185, 0.45);
+  border-radius: var(--radius-md);
+  color: var(--text-subtle);
+  font-size: 0.8125rem;
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 看板卡片本體 */
+.kanban-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.95rem 1.05rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.2s ease, border-color 0.18s ease;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.kanban-card:hover {
+  transform: translateY(-2px);
+  border-color: #DDE4E4;
+  box-shadow: 0 6px 18px rgba(44, 53, 57, 0.07);
+}
+
+.kanban-card:active {
+  cursor: grabbing;
+}
+
+/* 被拖曳中的卡片效果 */
+.kanban-card.dragging {
+  opacity: 0.35;
+  transform: scale(0.97) rotate(-1.5deg);
+  box-shadow: 0 14px 28px rgba(44, 53, 57, 0.12);
+  border-color: var(--work-primary);
+}
+
+/* 卡片頂部 (標題與刪除鈕) */
+.card-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+/* Done 欄位的完成樣式 */
+.kanban-card.status-done .card-title {
+  text-decoration: line-through;
+  color: var(--text-subtle);
+}
+
+.kanban-card.status-done {
+  opacity: 0.72;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* 卡片底部 (標籤列) */
+.card-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.card-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+/* 單個任務項目 (相容既有項目) */
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease, border-color 0.15s ease;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.task-item:hover {
+  border-color: #DDE4E4;
+  box-shadow: 0 4px 14px rgba(44, 53, 57, 0.05);
+}
+
+.task-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+  min-width: 0;
+}
+
+/* 自訂莫蘭迪核取方塊 */
+.custom-checkbox {
+  position: relative;
+  width: 21px;
+  height: 21px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.custom-checkbox input {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  margin: 0;
+}
+
+.checkbox-mark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  border: 1.8px solid var(--checkbox-border);
+  background: transparent;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-checkbox:hover .checkbox-mark {
+  border-color: var(--checkbox-checked);
+}
+
+.checkbox-mark svg {
+  width: 12px;
+  height: 12px;
+  stroke: #FFFFFF;
+  stroke-width: 3;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.custom-checkbox input:checked ~ .checkbox-mark {
+  background: var(--checkbox-checked);
+  border-color: var(--checkbox-checked);
+}
+
+.custom-checkbox input:checked ~ .checkbox-mark svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 任務文字 */
+.task-text {
+  font-size: 0.975rem;
+  color: var(--text-main);
+  word-break: break-word;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* 完成狀態樣式 */
+.task-item.completed {
+  opacity: 0.62;
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.task-item.completed .task-text {
+  text-decoration: line-through;
+  color: var(--text-subtle);
+}
+
+/* 右側操作區 (標籤 + 刪除按鈕) */
+.task-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* 分類標籤樣式 (莫蘭迪色系) */
+.badge-category {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.22rem 0.65rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
+}
+
+.badge-category.work {
+  color: var(--work-primary);
+  background-color: var(--work-bg);
+  border: 1px solid var(--work-border);
+}
+
+.badge-category.life {
+  color: var(--life-primary);
+  background-color: var(--life-bg);
+  border: 1px solid var(--life-border);
+}
+
+/* 優先順序標籤樣式 (莫蘭迪色系) */
+.badge-priority {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.badge-priority::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.badge-priority.high {
+  color: var(--priority-high);
+  background-color: var(--priority-high-bg);
+  border: 1px solid var(--priority-high-border);
+}
+.badge-priority.high::before {
+  background-color: var(--priority-high);
+}
+
+.badge-priority.medium {
+  color: var(--priority-med);
+  background-color: var(--priority-med-bg);
+  border: 1px solid var(--priority-med-border);
+}
+.badge-priority.medium::before {
+  background-color: var(--priority-med);
+}
+
+.badge-priority.low {
+  color: var(--priority-low);
+  background-color: var(--priority-low-bg);
+  border: 1px solid var(--priority-low-border);
+}
+.badge-priority.low::before {
+  background-color: var(--priority-low);
+}
+
+/* 互動式優先順序標籤 (點擊可切換高/中/低) */
+.badge-priority.interactive {
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  transition: all 0.18s ease;
+  position: relative;
+}
+
+.badge-priority.interactive:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.96);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.badge-priority.interactive:active {
+  transform: scale(0.94);
+}
+
+/* 任務到期時限標籤 */
+.badge-deadline {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: #F0F3F4;
+  padding: 0.18rem 0.55rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.badge-deadline svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+}
+
+.badge-deadline.overdue {
+  color: var(--danger-color);
+  background: var(--danger-bg);
+  border: 1px solid rgba(178, 106, 106, 0.25);
+  font-weight: 600;
+}
+
+.badge-deadline.today {
+  color: var(--priority-med);
+  background: var(--priority-med-bg);
+  border: 1px solid var(--priority-med-border);
+}
+
+/* 刪除按鈕 */
+.btn-delete {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.35rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  opacity: 0.7;
+}
+
+.btn-delete svg {
+  width: 17px;
+  height: 17px;
+}
+
+.btn-delete:hover {
+  opacity: 1;
+  color: var(--danger-color);
+  background: var(--danger-bg);
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   時間軸視圖 (Timeline View)
+   ========================================================================== */
+
+.timeline-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+  padding-left: 0.25rem;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.timeline-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timeline-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.timeline-date-title {
+  color: var(--text-main);
+  letter-spacing: 0.01em;
+}
+
+.timeline-header-badge {
+  font-size: 0.7rem;
+  background: rgba(120, 134, 145, 0.12);
+  color: var(--text-muted);
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-full);
+}
+
+.timeline-track-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding-left: 1.5rem;
+}
+
+/* 垂直時間軸主線 */
+.timeline-track-container::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: #E2E8EC;
+  border-radius: 1px;
+}
+
+/* 時間軸單項節點 */
+.timeline-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 節點圓點 */
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: calc(-1.5rem + 2px);
+  top: 1.25rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2.5px solid var(--btn-main);
+  z-index: 2;
+  box-shadow: 0 0 0 3px #F4F6F5;
+  transition: all 0.2s ease;
+}
+
+.timeline-item.overdue::before {
+  border-color: var(--danger-color);
+  background: var(--danger-bg);
+}
+
+.timeline-item.completed::before {
+  border-color: var(--text-subtle);
+  background: var(--text-subtle);
+}
+
+/* 時間軸卡片本體 */
+.timeline-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.15rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+}
+
+.timeline-card:hover {
+  border-color: #DDE4E4;
+  box-shadow: 0 4px 14px rgba(44, 53, 57, 0.05);
+}
+
+.timeline-card.completed {
+  opacity: 0.62;
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.timeline-card.completed .task-text {
+  text-decoration: line-through;
+  color: var(--text-subtle);
+}
+
+.timeline-task-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.timeline-time-tag {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--work-primary);
+  background: var(--work-bg);
+  padding: 0.12rem 0.45rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
+}
+
+.timeline-card.overdue .timeline-time-tag {
+  color: var(--danger-color);
+  background: var(--danger-bg);
+}
+
+/* 空白狀態提示 (Empty State) */
+.empty-state {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1.5px dashed var(--border-light);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+}
+
+.empty-state.show {
+  display: flex;
+}
+
+.empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #EDF1F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+  color: var(--text-muted);
+}
+
+.empty-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.empty-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.empty-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* 動畫效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 響應式調整 */
+@media (max-width: 880px) {
+  .kanban-board {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 0.85rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .kanban-column {
+    min-width: 280px;
+    max-width: 320px;
+    flex: 0 0 85%;
+    scroll-snap-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 1.75rem 1rem;
+  }
+
+  .header-title {
+    font-size: 1.6rem;
+  }
+
+  .input-card {
+    padding: 1rem 1.1rem;
+  }
+
+  .form-options {
+    gap: 0.65rem;
+  }
+
+  .option-divider {
+    display: none;
+  }
+
+  .task-item,
+  .kanban-card {
+    padding: 0.85rem 1rem;
+  }
+
+  .btn-submit span {
+    display: none;
+  }
+
+  .btn-submit {
+    padding: 0.65rem;
+  }
+}

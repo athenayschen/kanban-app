@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>待辦清單 | Minimalist To-Do</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <span class="header-date" id="currentDate">載入日期中...</span>
+        <h1 class="header-title">今日待辦</h1>
+      </div>
+      <div class="header-badge" id="statsCount">0 項任務</div>
+    </header>
+
+    <!-- Task Input Section -->
+    <section class="card input-card">
+      <form id="todoForm" class="todo-form" autocomplete="off">
+        <div class="input-main">
+          <input 
+            type="text" 
+            id="taskInput" 
+            class="task-input" 
+            placeholder="今天打算完成什麼事？" 
+            maxlength="120"
+            required
+          >
+          <button type="submit" class="btn-submit" id="addBtn" aria-label="新增任務">
+            <svg class="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>新增</span>
+          </button>
+        </div>
+
+        <!-- Options: Category & Priority -->
+        <div class="form-options">
+          <div class="option-group">
+            <span class="option-label">分類：</span>
+            <div class="pill-group">
+              <label class="category-pill work">
+                <input type="radio" name="category" value="work" checked>
+                <span class="pill-dot"></span>
+                <span class="pill-text">工作</span>
+              </label>
+              <label class="category-pill life">
+                <input type="radio" name="category" value="life">
+                <span class="pill-dot"></span>
+                <span class="pill-text">生活</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="option-divider"></div>
+
+          <div class="option-group">
+            <span class="option-label">優先順序：</span>
+            <div class="pill-group">
+              <label class="priority-pill high">
+                <input type="radio" name="priority" value="high">
+                <span class="pill-dot"></span>
+                <span class="pill-text">高</span>
+              </label>
+              <label class="priority-pill medium">
+                <input type="radio" name="priority" value="medium" checked>
+                <span class="pill-dot"></span>
+                <span class="pill-text">中</span>
+              </label>
+              <label class="priority-pill low">
+                <input type="radio" name="priority" value="low">
+                <span class="pill-dot"></span>
+                <span class="pill-text">低</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="option-divider"></div>
+
+          <!-- Deadline Input -->
+          <div class="option-group deadline-group">
+            <span class="option-label">時限：</span>
+            <div class="deadline-input-wrapper">
+              <input type="datetime-local" id="taskDueDate" class="deadline-input" title="設定任務截止時限（選填）">
+              <button type="button" class="btn-clear-date" id="clearDateBtn" title="清除時限" style="display: none;">&times;</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- Filters & Stats Toolbar -->
+    <section class="toolbar">
+      <div class="filter-tabs" role="tablist">
+        <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">
+          全部 <span class="tab-badge" id="badgeAll">0</span>
+        </button>
+        <button class="filter-tab" data-filter="work" role="tab" aria-selected="false">
+          工作 <span class="tab-badge" id="badgeWork">0</span>
+        </button>
+        <button class="filter-tab" data-filter="life" role="tab" aria-selected="false">
+          生活 <span class="tab-badge" id="badgeLife">0</span>
+        </button>
+      </div>
+
+      <div class="toolbar-right">
+        <!-- View Toggle (Kanban / Timeline) -->
+        <div class="view-toggle" role="group" aria-label="檢視模式切換">
+          <button class="view-btn active" id="viewBoardBtn" data-view="board" title="看板檢視 (To-do / Process / Done 拖曳排版)">
+            <svg class="view-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="5" height="18" rx="1"></rect>
+              <rect x="10" y="3" width="5" height="12" rx="1"></rect>
+              <rect x="17" y="3" width="5" height="15" rx="1"></rect>
+            </svg>
+            <span>看板</span>
+          </button>
+          <button class="view-btn" id="viewTimelineBtn" data-view="timeline" title="時間軸檢視 (依時間先後順序展示)">
+            <svg class="view-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>時間軸</span>
+          </button>
+        </div>
+
+        <button id="clearCompletedBtn" class="btn-clear" title="清除已完成的任務" style="display: none;">
+          清除已完成
+        </button>
+      </div>
+    </section>
+
+    <!-- Task Views Section -->
+    <section class="task-views-section">
+      <!-- Kanban Board (3 Columns: To-do, Process, Done) -->
+      <div class="kanban-board" id="kanbanBoard">
+        <!-- Column 1: To-do -->
+        <div class="kanban-column" data-status="todo">
+          <div class="kanban-column-header header-todo">
+            <div class="column-title-wrap">
+              <span class="column-dot dot-todo"></span>
+              <h2 class="column-title">To-do</h2>
+            </div>
+            <span class="column-badge" id="countTodo">0</span>
+          </div>
+          <div class="kanban-column-body" id="colTodo" data-status="todo" role="list">
+            <!-- 動態渲染卡片 -->
+          </div>
+        </div>
+
+        <!-- Column 2: Process -->
+        <div class="kanban-column" data-status="process">
+          <div class="kanban-column-header header-process">
+            <div class="column-title-wrap">
+              <span class="column-dot dot-process"></span>
+              <h2 class="column-title">Process</h2>
+            </div>
+            <span class="column-badge" id="countProcess">0</span>
+          </div>
+          <div class="kanban-column-body" id="colProcess" data-status="process" role="list">
+            <!-- 動態渲染卡片 -->
+          </div>
+        </div>
+
+        <!-- Column 3: Done -->
+        <div class="kanban-column" data-status="done">
+          <div class="kanban-column-header header-done">
+            <div class="column-title-wrap">
+              <span class="column-dot dot-done"></span>
+              <h2 class="column-title">Done</h2>
+            </div>
+            <span class="column-badge" id="countDone">0</span>
+          </div>
+          <div class="kanban-column-body" id="colDone" data-status="done" role="list">
+            <!-- 動態渲染卡片 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline View (Visual Chronological Track) -->
+      <div class="timeline-view" id="timelineView" style="display: none;">
+        <!-- 動態由 app.js 渲染 -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+        </div>
+        <p class="empty-title">一切就緒</p>
+        <p class="empty-desc" id="emptyDesc">目前沒有任何待辦事項，享受輕鬆片刻吧！</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
